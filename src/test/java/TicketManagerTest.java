@@ -7,21 +7,21 @@ public class TicketManagerTest {
     TicketRepository repo = new TicketRepository();
     TicketManager manager = new TicketManager(repo);
 
-    Ticket ticket1 = new Ticket(1, 1000, "DME", "GOJ", 60);
+    Ticket ticket1 = new Ticket(1, 1000, "DME", "GOJ", 90);
     Ticket ticket2 = new Ticket(2, 2500, "DME", "GOJ", 60);
-    Ticket ticket3 = new Ticket(3, 2000, "DME", "GOJ", 60);
+    Ticket ticket3 = new Ticket(3, 2000, "DME", "GOJ", 75);
 
     Ticket ticket4 = new Ticket(4, 4000, "AER", "SVO", 150);
     Ticket ticket5 = new Ticket(5, 2500, "AER", "SVO", 150);
     Ticket ticket6 = new Ticket(6, 3500, "AER", "SVO", 150);
     Ticket ticket7 = new Ticket(7, 3200, "AER", "SVO", 150);
 
-    Ticket ticket8 = new Ticket(8, 3100, "SVO", "LED", 90);
+    Ticket ticket8 = new Ticket(8, 3100, "SVO", "LED", 100);
     Ticket ticket9 = new Ticket(9, 6500, "SVO", "LED", 90);
-    Ticket ticket10 = new Ticket(10, 3200, "SVO", "LED", 90);
-    Ticket ticket11 = new Ticket(11, 6000, "SVO", "LED", 90);
-    Ticket ticket12 = new Ticket(12, 3700, "SVO", "LED", 90);
-    Ticket ticket13 = new Ticket(13, 6150, "SVO", "LED", 90);
+    Ticket ticket10 = new Ticket(10, 3200, "SVO", "LED", 80);
+    Ticket ticket11 = new Ticket(11, 6000, "SVO", "LED", 120);
+    Ticket ticket12 = new Ticket(12, 3700, "SVO", "LED", 110);
+    Ticket ticket13 = new Ticket(13, 6150, "SVO", "LED", 150);
 
     @BeforeEach
     public void setup() {
@@ -69,6 +69,15 @@ public class TicketManagerTest {
     public void shouldNotFindWithNoMatches() {
         Ticket[] expected = {};
         Ticket[] actual = manager.searchByFromAndTo("ROV", "PEZ");
+
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldFindByFromAndToSortByPrice() {
+        TicketByPriceAscComparator comparator = new TicketByPriceAscComparator();
+        Ticket[] expected = {ticket10, ticket9, ticket8, ticket12, ticket11, ticket13};
+        Ticket[] actual = manager.searchByFromAndToSortByPrice("SVO", "LED", comparator);
 
         Assertions.assertArrayEquals(expected, actual);
     }
